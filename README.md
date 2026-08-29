@@ -1,42 +1,39 @@
-# sv
+# Escolas Brasil
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+> ⚠️ **Work in progress — early alpha.** Expect bugs, incomplete data, and breaking changes.
 
-## Creating a project
+Interactive geospatial dashboard mapping public schools across 
+all Brazilian municipalities, built with SvelteKit and Leaflet.js.
 
-If you're seeing this, you've probably already done this step. Congrats!
+![screenshot](static/data/screenshot.png)
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Status
 
-To recreate this project with the same configuration:
+This project is in early development. Current known limitations:
+- Not all states have complete school data
+- Mobile layout not yet optimized
+- Search and filter features still being refined
+- Display bugs still occurring
 
-```sh
-# recreate this project
-npx sv@0.17.0 create --template minimal --types jsdoc --install npm .
-```
+## Features (so far)
 
-## Developing
+- Interactive choropleth map — municipalities colored by number of schools
+- State selector with sorting (A–Z, most/least schools)
+- Municipality search with real-time filtering
+- Detail panel with school data per municipality
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Tech Stack
 
-```sh
+SvelteKit · Svelte 5 (runes) · TypeScript · Leaflet.js · GeoJSON · Tailwind CSS
+
+## Running locally
+
+```bash
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## Data source
 
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Public school data from INEP — Instituto Nacional de Estudos 
+e Pesquisas Educacionais Anísio Teixeira.
