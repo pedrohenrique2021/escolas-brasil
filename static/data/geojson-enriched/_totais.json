@@ -1,29 +1,244 @@
 {
-  "Acre": 1654,
-  "Alagoas": 3405,
-  "Amapa": 948,
-  "Amazonas": 6115,
-  "Bahia": 19328,
-  "Ceara": 9951,
-  "DistritoFederal": 1341,
-  "EspiritoSanto": 3840,
-  "Goias": 4962,
-  "Maranhao": 13314,
-  "MatoGrosso": 3104,
-  "MatoGrossoDoSul": 1922,
-  "MinasGerais": 23526,
-  "Para": 11615,
-  "Paraiba": 5196,
-  "Parana": 9910,
-  "Pernambuco": 9748,
-  "Piaui": 5408,
-  "RioDeJaneiro": 13029,
-  "RioGrandeDoNorte": 4612,
-  "RioGrandeDoSul": 11000,
-  "Rondonia": 1375,
-  "Roraima": 944,
-  "SantaCatarina": 7336,
-  "SaoPaulo": 33101,
-  "Sergipe": 2393,
-  "Tocantins": 2165
+  "Acre": {
+    "total": 1654,
+    "porDependencia": {
+      "Municipal": 933,
+      "Estadual": 668,
+      "Privada": 46,
+      "Federal": 7
+    }
+  },
+  "Alagoas": {
+    "total": 3405,
+    "porDependencia": {
+      "Estadual": 325,
+      "Municipal": 2468,
+      "Privada": 595,
+      "Federal": 17
+    }
+  },
+  "Amapa": {
+    "total": 948,
+    "porDependencia": {
+      "Estadual": 402,
+      "Municipal": 436,
+      "Privada": 104,
+      "Federal": 6
+    }
+  },
+  "Amazonas": {
+    "total": 6115,
+    "porDependencia": {
+      "Estadual": 785,
+      "Municipal": 4886,
+      "Privada": 426,
+      "Federal": 18
+    }
+  },
+  "Bahia": {
+    "total": 19328,
+    "porDependencia": {
+      "Estadual": 1136,
+      "Municipal": 14856,
+      "Privada": 3299,
+      "Federal": 37
+    }
+  },
+  "Ceara": {
+    "total": 9951,
+    "porDependencia": {
+      "Municipal": 6782,
+      "Estadual": 775,
+      "Privada": 2359,
+      "Federal": 35
+    }
+  },
+  "DistritoFederal": {
+    "total": 1341,
+    "porDependencia": {
+      "Privada": 620,
+      "Estadual": 710,
+      "Federal": 11
+    }
+  },
+  "EspiritoSanto": {
+    "total": 3840,
+    "porDependencia": {
+      "Municipal": 2579,
+      "Estadual": 558,
+      "Privada": 680,
+      "Federal": 23
+    }
+  },
+  "Goias": {
+    "total": 4962,
+    "porDependencia": {
+      "Municipal": 2618,
+      "Estadual": 992,
+      "Privada": 1325,
+      "Federal": 27
+    }
+  },
+  "Maranhao": {
+    "total": 13314,
+    "porDependencia": {
+      "Municipal": 10559,
+      "Estadual": 1314,
+      "Privada": 1410,
+      "Federal": 31
+    }
+  },
+  "MatoGrosso": {
+    "total": 3104,
+    "porDependencia": {
+      "Municipal": 1757,
+      "Estadual": 798,
+      "Privada": 530,
+      "Federal": 19
+    }
+  },
+  "MatoGrossoDoSul": {
+    "total": 1922,
+    "porDependencia": {
+      "Estadual": 362,
+      "Municipal": 1014,
+      "Privada": 535,
+      "Federal": 11
+    }
+  },
+  "MinasGerais": {
+    "total": 23526,
+    "porDependencia": {
+      "Municipal": 12746,
+      "Estadual": 4196,
+      "Privada": 6503,
+      "Federal": 81
+    }
+  },
+  "Para": {
+    "total": 11615,
+    "porDependencia": {
+      "Municipal": 9511,
+      "Estadual": 1096,
+      "Privada": 985,
+      "Federal": 23
+    }
+  },
+  "Paraiba": {
+    "total": 5196,
+    "porDependencia": {
+      "Municipal": 3557,
+      "Estadual": 652,
+      "Privada": 961,
+      "Federal": 26
+    }
+  },
+  "Parana": {
+    "total": 9910,
+    "porDependencia": {
+      "Estadual": 2119,
+      "Municipal": 5417,
+      "Privada": 2344,
+      "Federal": 30
+    }
+  },
+  "Pernambuco": {
+    "total": 9748,
+    "porDependencia": {
+      "Privada": 3041,
+      "Municipal": 5605,
+      "Estadual": 1076,
+      "Federal": 26
+    }
+  },
+  "Piaui": {
+    "total": 5408,
+    "porDependencia": {
+      "Municipal": 4137,
+      "Estadual": 746,
+      "Privada": 502,
+      "Federal": 23
+    }
+  },
+  "RioDeJaneiro": {
+    "total": 13029,
+    "porDependencia": {
+      "Estadual": 1453,
+      "Privada": 5152,
+      "Federal": 68,
+      "Municipal": 6356
+    }
+  },
+  "RioGrandeDoNorte": {
+    "total": 4612,
+    "porDependencia": {
+      "Estadual": 745,
+      "Municipal": 2755,
+      "Privada": 1082,
+      "Federal": 30
+    }
+  },
+  "RioGrandeDoSul": {
+    "total": 11000,
+    "porDependencia": {
+      "Municipal": 5565,
+      "Estadual": 2452,
+      "Privada": 2934,
+      "Federal": 49
+    }
+  },
+  "Rondonia": {
+    "total": 1375,
+    "porDependencia": {
+      "Estadual": 416,
+      "Municipal": 740,
+      "Privada": 209,
+      "Federal": 10
+    }
+  },
+  "Roraima": {
+    "total": 944,
+    "porDependencia": {
+      "Estadual": 400,
+      "Municipal": 485,
+      "Federal": 7,
+      "Privada": 52
+    }
+  },
+  "SantaCatarina": {
+    "total": 7336,
+    "porDependencia": {
+      "Municipal": 4205,
+      "Estadual": 1363,
+      "Privada": 1729,
+      "Federal": 39
+    }
+  },
+  "SaoPaulo": {
+    "total": 33101,
+    "porDependencia": {
+      "Estadual": 6423,
+      "Municipal": 13747,
+      "Privada": 12884,
+      "Federal": 47
+    }
+  },
+  "Sergipe": {
+    "total": 2393,
+    "porDependencia": {
+      "Estadual": 319,
+      "Municipal": 1404,
+      "Privada": 659,
+      "Federal": 11
+    }
+  },
+  "Tocantins": {
+    "total": 2165,
+    "porDependencia": {
+      "Estadual": 556,
+      "Municipal": 1277,
+      "Privada": 321,
+      "Federal": 11
+    }
+  }
 }

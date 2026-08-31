@@ -3,9 +3,10 @@
 	import Sidebar from "../components/Sidebar.svelte";
 	import SearchBar from "../components/SearchBar.svelte";
 	import MunicipioPanel from "../components/MunicipioPanel.svelte";
+	import { filters } from "$lib/stores.svelte";
 
 	let selectedSrc = $state('/data/geojson-enriched/Acre.json');
-	let selectedStateName = $state('Acre');
+	 
 
 	let geojsonData = $state(null);
 	let searchQuery = $state('');
@@ -20,7 +21,7 @@
 	}
 
 	function handleStateName(name: string) {
-		selectedStateName = name;
+		filters.selectedStateName = name;
 	}
 
 	function handleSelectMunicipio(properties: any) {
@@ -67,7 +68,7 @@
 
 <div class="h-screen w-screen flex flex-col bg-zinc-950 text-white overflow-hidden">
 	<nav class="h-[60px] shrink-0 flex items-center px-6 border-b border-zinc-800">
-		<span class="font-semibold">Escolas Brasil — {selectedStateName}</span>
+		<span class="font-semibold">Escolas Brasil — {filters.selectedStateName}</span>
 	</nav>
 
 	<div class="flex flex-1 overflow-hidden">
