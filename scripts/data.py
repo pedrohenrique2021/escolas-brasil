@@ -97,8 +97,8 @@ def enriquecer_estado(uf: str, nome_arquivo: str, grupos: dict):
 
 
 def gerar_resumo_por_estado(uf_to_file: dict):
-    """Soma o total de escolas de cada estado (a partir dos arquivos já enriquecidos)
-    e escreve um resumo pequeno, fácil de consumir no frontend."""
+    """Soma o total de escolas de cada estado, e também por dependência administrativa,
+    a partir dos arquivos já enriquecidos."""
     resumo = {}
 
     for uf, nome_arquivo in uf_to_file.items():
@@ -109,11 +109,20 @@ def gerar_resumo_por_estado(uf_to_file: dict):
         with open(caminho, encoding="utf-8") as f:
             geojson = json.load(f)
 
-        total = sum(
-            feature["properties"].get("escolas_total", 0)
-            for feature in geojson["features"]
-        )
-        resumo[nome_arquivo] = total
+        total = 0
+        por_dependencia = {}
+
+        for feature in geojson["features"]:
+            props = feature["properties"]
+            total += props.get("escolas_total", 0)
+
+            for dep, qtd in props.get("escolas_por_dependencia", {}).items():
+                por_dependencia[dep] = por_dependencia.get(dep, 0) + qtd
+
+        resumo[nome_arquivo] = {
+            "total": total,
+            "porDependencia": por_dependencia
+        }
 
     caminho_saida = os.path.join(OUTPUT_DIR, "_totais.json")
     with open(caminho_saida, "w", encoding="utf-8") as f:

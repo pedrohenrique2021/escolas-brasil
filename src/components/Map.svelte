@@ -15,6 +15,7 @@
 	let geojsonLayer: any;
 	let L: any;
 	let layersById: Record<string, any> = {};
+	let selectedId = $state(null);
 
 	function corPorEscolas(total: number) {
 		if (total === 0) return "#27272a";
@@ -34,36 +35,64 @@
 
 		function highlightFeature(e: any) {
 			const layer = e.target;
-			layer.setStyle({ weight: 2, color: "#ffffff", fillOpacity: 0.85 });
+			layer.setStyle({ weight: 2, color: "#ffffff", fillOpacity: 1 });
 			layer.bringToFront();
 		}
 
 		function resetHighlight(e: any) {
+			const id = e.target.feature.properties.id;
+			if  (id === selectedId) return
 			geojsonLayer.resetStyle(e.target);
 		}
 
 		function onEachFeature(feature: any, layer: any) {
 			const p = feature.properties;
-			layer.bindTooltip(`${p.name} — ${p.escolas_total ?? 0} escolas`, { sticky: true });
 
-			layer.on({
-				mouseover: highlightFeature,
-				mouseout: resetHighlight,
-				click: () => {
-					onSelectMunicipio?.(p);
-					map.fitBounds(layer.getBounds(), { maxZoom: 11 });
-				}
+			layer.bindTooltip(
+				`${p.name} — ${p.escolas_total ?? 0} escolas`,
+				{ sticky: true }
+			);
+
+	layer.on({
+		mouseover: highlightFeature,
+		mouseout: resetHighlight,
+
+		click: () => {
+			// Remove o destaque do município anterior
+			if (selectedId && layersById[selectedId]) {
+				geojsonLayer.resetStyle(layersById[selectedId]);
+			}
+
+			// Define o município atual como selecionado
+			selectedId = p.id;
+
+			// Mantém o efeito de hover
+			layer.setStyle({
+				weight: 2,
+				color: "#ffffff",
+				fillOpacity: 1
 			});
 
-			layersById[p.id] = layer;
+			layer.bringToFront();
+
+			// Seu comportamento original
+			onSelectMunicipio?.(p);
+
+			map.fitBounds(layer.getBounds(), {
+				maxZoom: 11
+			});
 		}
+	});
+
+	layersById[p.id] = layer;
+}
 
 		geojsonLayer = L.geoJSON(geojson, {
 			style: (feature: any) => ({
 				color: "#18181b",
 				weight: 1,
 				fillColor: corPorEscolas(feature.properties.escolas_total ?? 0),
-				fillOpacity: 0.75
+				fillOpacity: 0.85
 			}),
 			onEachFeature
 		}).addTo(map);
