@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
+	import { filters } from "$lib/stores.svelte.js";
 
 	let {
 		geojson,
@@ -13,16 +14,39 @@
 	let mapContainer: HTMLDivElement;
 	let map: any;
 	let geojsonLayer: any;
-	let L: any;
 	let layersById: Record<string, any> = {};
-	let selectedId = $state(null);
+	let L: any;
 
-	function corPorEscolas(total: number) {
-		if (total === 0) return "#27272a";
-		if (total <= 10) return "#3730a3";
-		if (total <= 30) return "#4f46e5";
-		if (total <= 60) return "#818cf8";
-		return "#c7d2fe";
+	const CORES = ["#27272a", "#3730a3", "#4f46e5", "#818cf8", "#c7d2fe"];
+
+	// pega o número certo do município, respeitando o filtro ativo
+	function escolasDoMunicipio(properties: any) {
+		if (filters.selectedDependencia === 'Todas') {
+			return properties.escolas_total ?? 0;
+		}
+		return properties.escolas_por_dependencia?.[filters.selectedDependencia] ?? 0;
+	}
+
+	// calcula os limiares (quantis) a partir dos valores REAIS do estado+filtro atual
+	function calcularLimiares(valores: number[]) {
+		const positivos = valores.filter((v) => v > 0).sort((a, b) => a - b);
+
+		if (positivos.length === 0) return [0, 0, 0, 0];
+
+		const quantil = (p: number) => {
+			const idx = Math.floor(p * (positivos.length - 1));
+			return positivos[idx];
+		};
+
+		return [quantil(0.25), quantil(0.5), quantil(0.75), quantil(1)];
+	}
+
+	function corPorValor(valor: number, limiares: number[]) {
+		if (valor === 0) return CORES[0];
+		if (valor <= limiares[0]) return CORES[1];
+		if (valor <= limiares[1]) return CORES[2];
+		if (valor <= limiares[2]) return CORES[3];
+		return CORES[4];
 	}
 
 	function desenharGeojson() {
@@ -33,66 +57,47 @@
 		}
 		layersById = {};
 
+		// coleta todos os valores do estado, já considerando o filtro ativo
+		const valores = geojson.features.map((f: any) => escolasDoMunicipio(f.properties));
+		const limiares = calcularLimiares(valores);
+
 		function highlightFeature(e: any) {
 			const layer = e.target;
-			layer.setStyle({ weight: 2, color: "#ffffff", fillOpacity: 1 });
+			layer.setStyle({ weight: 2, color: "#ffffff", fillOpacity: 0.85 });
 			layer.bringToFront();
 		}
 
 		function resetHighlight(e: any) {
-			const id = e.target.feature.properties.id;
-			if  (id === selectedId) return
 			geojsonLayer.resetStyle(e.target);
 		}
 
 		function onEachFeature(feature: any, layer: any) {
 			const p = feature.properties;
+			const total = escolasDoMunicipio(p);
+			const rotulo = filters.selectedDependencia === 'Todas'
+				? 'escolas'
+				: `escolas — ${filters.selectedDependencia}`;
 
-			layer.bindTooltip(
-				`${p.name} — ${p.escolas_total ?? 0} escolas`,
-				{ sticky: true }
-			);
+			layer.bindTooltip(`${p.name} — ${total} ${rotulo}`, { sticky: true });
 
-	layer.on({
-		mouseover: highlightFeature,
-		mouseout: resetHighlight,
-
-		click: () => {
-			// Remove o destaque do município anterior
-			if (selectedId && layersById[selectedId]) {
-				geojsonLayer.resetStyle(layersById[selectedId]);
-			}
-
-			// Define o município atual como selecionado
-			selectedId = p.id;
-
-			// Mantém o efeito de hover
-			layer.setStyle({
-				weight: 2,
-				color: "#ffffff",
-				fillOpacity: 1
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: () => {
+					onSelectMunicipio?.(p);
+					map.fitBounds(layer.getBounds(), { maxZoom: 11 });
+				}
 			});
 
-			layer.bringToFront();
-
-			// Seu comportamento original
-			onSelectMunicipio?.(p);
-
-			map.fitBounds(layer.getBounds(), {
-				maxZoom: 11
-			});
+			layersById[p.id] = layer;
 		}
-	});
-
-	layersById[p.id] = layer;
-}
 
 		geojsonLayer = L.geoJSON(geojson, {
 			style: (feature: any) => ({
 				color: "#18181b",
 				weight: 1,
-				fillColor: corPorEscolas(feature.properties.escolas_total ?? 0),
-				fillOpacity: 0.85
+				fillColor: corPorValor(escolasDoMunicipio(feature.properties), limiares),
+				fillOpacity: 0.75
 			}),
 			onEachFeature
 		}).addTo(map);
@@ -108,21 +113,26 @@
 
 		map = L.map(mapContainer).setView(center, zoom);
 
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-			attribution: '&copy; OpenStreetMap contributors'
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=SUA_CHAVE_AQUI', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
 		}).addTo(map);
 
 		desenharGeojson();
 	});
 
-	// redesenha sempre que o geojson (estado selecionado) mudar
 	$effect(() => {
 		if (geojson) {
 			desenharGeojson();
 		}
 	});
 
-	// pula pro município buscado, quando focusId mudar
+	$effect(() => {
+		filters.selectedDependencia;
+		if (map && geojson) {
+			desenharGeojson();
+		}
+	});
+
 	$effect(() => {
 		const layer = focusId ? layersById[focusId] : null;
 		if (layer && map) {
