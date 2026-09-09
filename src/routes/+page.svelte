@@ -37,7 +37,10 @@
 		if (!selectedSrc) return;
 		fetch(selectedSrc)
 			.then((res) => res.json())
-			.then((data) => (geojsonData = data));
+			.then((data) => {
+				geojsonData = data;
+				filters.geojsonAtual = data; // NOVO
+			});
 	});
 
 	let municipiosFiltrados = $derived(
