@@ -53,7 +53,17 @@ def carregar_escolas_agrupadas():
                 "inep": row["Código INEP"],
                 "dependencia": dep,
                 "categoria": row.get("Categoria Administrativa", ""),
-                "restricao": row.get("Restrição de Atendimento", "")
+                "categoriaPrivada": row.get("Categoria Escola Privada", "").strip(),
+                "restricao": row.get("Restrição de Atendimento", ""),
+                "localizacao": row.get("Localização", "").strip(),
+                "localidadeDiferenciada": row.get("Localidade Diferenciada", "").strip(),
+                "endereco": row.get("Endereço", "").strip(),
+                "telefone": row.get("Telefone", "").strip(),
+                "porte": row.get("Porte da Escola", "").strip(),
+                "etapas": row.get("Etapas e Modalidade de Ensino Oferecidas", "").strip(),
+                "ofertasEspeciais": row.get("Outras Ofertas Educacionais", "").strip(),
+                "conveniada": row.get("Conveniada Poder Público", "").strip(),
+                "regulamentada": row.get("Regulamentação pelo Conselho de Educação", "").strip()
             })
 
     return grupos

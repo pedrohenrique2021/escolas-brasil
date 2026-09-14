@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Escola from "./escola.svelte";
 	let { municipio, onClose } = $props();
 
 	let filtroDependencia = $state('Todas');
@@ -17,33 +18,32 @@
 </script>
 
 {#if municipio}
-	<div class="p-4 flex flex-col h-full">
-		<div class="flex items-start justify-between">
-			<h2 class="text-lg font-semibold">{municipio.name}</h2>
-			<button onclick={onClose} class="text-zinc-500 hover:text-white text-sm">✕</button>
+	<div class="flex flex-col h-full">
+		<div class="p-2">
+			<div class="flex items-start justify-between">
+				<h2 class="text-lg font-semibold">{municipio.name}</h2>
+				<button onclick={onClose} class="text-zinc-500 hover:text-white text-sm">✕</button>
+			</div>
+
+			<p class="text-zinc-400 text-sm mt-1">{municipio.escolas_total ?? 0} escolas cadastradas</p>
+
+			<div class="flex flex-wrap gap-2 mt-3">
+				{#each dependencias as dep}
+					<button
+						onclick={() => (filtroDependencia = dep)}
+						class="text-xs px-2 py-1 rounded-full border {filtroDependencia === dep
+							? 'bg-indigo-600 border-indigo-600 text-white'
+							: 'border-zinc-700 text-zinc-400 hover:text-white'}"
+					>
+						{dep}{dep !== 'Todas' ? ` (${municipio.escolas_por_dependencia[dep]})` : ''}
+					</button>
+				{/each}
+			</div>
 		</div>
 
-		<p class="text-zinc-400 text-sm mt-1">{municipio.escolas_total ?? 0} escolas cadastradas</p>
-
-		<div class="flex flex-wrap gap-2 mt-3">
-			{#each dependencias as dep}
-				<button
-					onclick={() => (filtroDependencia = dep)}
-					class="text-xs px-2 py-1 rounded-full border {filtroDependencia === dep
-						? 'bg-indigo-600 border-indigo-600 text-white'
-						: 'border-zinc-700 text-zinc-400 hover:text-white'}"
-				>
-					{dep}{dep !== 'Todas' ? ` (${municipio.escolas_por_dependencia[dep]})` : ''}
-				</button>
-			{/each}
-		</div>
-
-		<div class="mt-4 flex-1 overflow-y-auto space-y-1">
+		<div class="mt-4 flex-1 overflow-y-auto ">
 			{#each escolasFiltradas as escola}
-				<div class="text-sm text-zinc-300 border-b border-zinc-800 py-2">
-					<p class="font-medium text-zinc-100">{escola.nome}</p>
-					<p class="text-zinc-500 text-xs">{escola.dependencia} · INEP {escola.inep}</p>
-				</div>
+				<Escola {escola}/>
 			{/each}
 
 			{#if escolasFiltradas.length === 0}
