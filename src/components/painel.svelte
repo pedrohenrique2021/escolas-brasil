@@ -112,7 +112,7 @@
 
 				<div class="space-y-2">
 					{#each topMunicipios as municipio, i}
-						<div class="grid grid-cols-[32px_1fr_auto] items-center gap-3 px-2 py-2 rounded-lg hover:bg-zinc-800/40 transition-colors">
+						<div class="grid grid-cols-[32px_1fr_auto] items-center gap-3 px-2 py-2 cursor-pointer rounded-lg hover:bg-zinc-800/40 transition-colors">
 							<span class="text-xs font-medium text-zinc-500">
 								{String(i + 1).padStart(2, '0')}
 							</span>
